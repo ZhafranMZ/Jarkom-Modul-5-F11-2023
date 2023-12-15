@@ -512,31 +512,40 @@ apt-get update
 apt-get install netcat -y
 ```
 
-Jalankan pada server untuk membuka port `8080`
+---
+Untuk melakukan pengecekan, bikin file `listen8080.sh` dan `listen8080.sh` pada server yang berisi
+
+- `listen8080.sh`
 ``` bash
-nc -vlp 8080
+while true
+do
+	nc -l -p 8080 -c 'hostname'
+done
 ```
-Jalankan pada client untuk mencoba port `8080` pada `[server ip]`
+- `listen8080.sh`
 ``` bash
-nc -v [server ip] 8080
+while true
+do
+	nc -l -p 8000 -c 'hostname'
+done
 ```
-Contoh Output:
-```
-10.57.4.2: inverse host lookup failed: Unknown host
-(UNKNOWN) [10.57.4.2] 8080 (http-alt) open
-```
-Jalankan pada server untuk membuka port 8000
+kemudian jalankan pada server
 ``` bash
-nc -v [server ip] 8000
+# Add Running Permission
+chmod +x listen8080.sh 
+chmod +x listen8080.sh
+
+# Run listen8080.sh and listen8080.sh in the Background
+./listen8080.sh & ./listen8080.sh & disown
 ```
-Jalankan pada client untuk mencoba port `8080` pada `[server ip]`
+Kemudian bisa jalankan pada client
 ``` bash
-nc -v [server ip] 8000
+nc [server ip] 8080 -w 3
+nc [server ip] 8000 -w 3
 ```
-Contoh Output:
-```
-10.57.4.2: inverse host lookup failed: Unknown host
-```
+![Screenshot from 2023-12-15 15-40-38](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/da7f8c9b-f574-431f-93ab-4f7b5a3d0182)
+
+
 ---
 Tips: pastikan tidak ada proses yang mendengarkan port tersebut dengan melakukan list semua port yang mendengarkan dan mendapatkan `[pid]` dengan
 ``` bash
@@ -551,8 +560,12 @@ Jalankan pada **Revolte** dan **Richter**
 ``` bash
 iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j DROP
 ```
-
+---
 Lakukan testing dengan melakukan ping dari 4 buah server yang berbeda. Ping `10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
+![Screenshot from 2023-12-15 15-25-32](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/b0e97520-5a84-4b03-a72e-29d58e574ff3)
+![Screenshot from 2023-12-15 15-25-25](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/a4ca76a9-bf70-4e9e-9766-c0b7189ded29)
+![Screenshot from 2023-12-15 15-33-15](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/caf16ed5-dbc4-4ba5-8807-967e61637dd1)
+![Screenshot from 2023-12-15 15-31-05](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/7a415410-0e57-4fdd-97ce-163462a4486f)
 
 ## No. 4
 Jalankan pada webserver **Sein** dan **Stark** yang membolehkan akses untuk port `22` pada subnet `10.57.4.0/22` yaitu **GrobeForest**
@@ -566,6 +579,12 @@ Jalnkan pada client
 nmap [server ip] -p 22
 ```
 Lakukan pada  `10.57.0.22` untuk **Stark**, dan `10.57.4.2` untuk **Sein**
+- Client GrobeForest
+
+![Screenshot from 2023-12-15 12-39-54](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/6008026b-cff5-4a82-a22a-61ef7a5b6684)
+- Selain GrobeForest
+
+![Screenshot from 2023-12-15 12-39-32](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/8c5e9d2c-c07d-4415-9783-56caa8d27065)
 
 ## No. 5
 ``` bash
@@ -660,3 +679,4 @@ Untuk melakukan pengecekan, pada node lain, jalankan
 nmap [server ip] -p 1-50
 ```
 Dimana `[server ip]` adalah `10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
+![Screenshot from 2023-12-15 15-03-39](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/4481617e-cacd-4973-b691-85a71c4843d0)
