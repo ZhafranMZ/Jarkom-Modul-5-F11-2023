@@ -569,21 +569,25 @@ Lakukan pada  `10.57.0.22` untuk **Stark**, dan `10.57.4.2` untuk **Sein**
 
 ## No. 5
 ``` bash
+# Accept Rule
 iptables -A INPUT -p tcp --dport 8080 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
 
+# Drop Rule
 iptables -A INPUT -p tcp --dport 8080 -j DROP
 ```
 
 ## No. 6
 ``` bash
+# Delete Previous Rule
 iptables -D INPUT -p tcp --dport 8080 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
 iptables -D INPUT -p tcp --dport 8080 -j DROP
 
+# Added New Rule
 iptables -A INPUT -p tcp --dport 8080 -m time --timestart 12:00 --timestop 13:00 --weekdays Mon,Tue,Wed,Thu -j DROP
 iptables -A INPUT -p tcp --dport 8080 -m time --timestart 11:00 --timestop 13:00 --weekdays Fri -j DROP
 
+# Re-Add Previously Deleted Rule
 iptables -A INPUT -p tcp --dport 8080 -m time --timestart 08:00 --timestop 16:00 --weekdays Mon,Tue,Wed,Thu,Fri -j ACCEPT
-
 iptables -A INPUT -p tcp --dport 8080 -j DROP
 ```
 
@@ -616,8 +620,11 @@ done
 ```
 kemudian jalankan pada **Sein** dan **Stark**
 ``` bash
+# Add Running Permission
 chmod +x listen80.sh 
 chmod +x listen443.sh
+
+# Run listen80.sh and listen443.sh in the Background
 ./listen80.sh & ./listen443.sh & disown
 ```
 ## No. 8
@@ -635,3 +642,9 @@ Masukkan dalam **Sein** dan **Stark**
 ``` bash
 iptables -A INPUT -p tcp -s 10.57.0.28/30 -m multiport --dports 80,443 -m time --datestart "2024-02-14T00:00:00" --datestop "2024-02-15T00:00:00" -j DROP
 ```
+---
+Untuk melakukan pengecekan, pada node lain, jalankan
+``` bash
+nmap [server ip] -p 1000-1050
+```
+`10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
