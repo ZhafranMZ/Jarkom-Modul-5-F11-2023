@@ -279,7 +279,7 @@ echo nameserver 192.168.122.1 > /etc/resolv.conf
 
 # Install Required Packages
 apt-get update
-apt-get install bind9 
+apt-get install bind9 -y 
 
 # Prepare Directory
 mkdir -p /etc/bind/praktikum
