@@ -484,7 +484,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $(ifconfig eth0 | gre
 ```
 
 ## No. 2
-Jalankan pada webserver **Sein** dan **Stark**
+Jalankan pada server yang hanya membolehkan port `8080` untuk masuk
 ``` bash
 # Flush Filter Table
 iptables -F
@@ -499,25 +499,35 @@ iptables -A INPUT -p tcp --dport 8080 -j ACCEPT
 iptables -A INPUT -p tcp -j DROP
 iptables -A INPUT -p udp -j DROP
 ```
+---
+Untuk melakukan pengecekan pada port `8080`, kita bisa menggunakan netcat untuk mendengarkan port `8080` dengan langkah berikut
 
-Untuk melakukan pengecekan pada port `8080`, kita bisa menggunakan netcat untuk mendengarkan port `8080` dengan
+Pertama install netcat pada client dan server
+``` bash
+# Set DNS Server
+echo nameserver 10.57.0.26 > /etc/resolv.conf
+
+# Install Required Packages
+apt-get update
+apt-get install netcat -y
+```
 
 Jalankan pada server untuk membuka port `8080`
 ``` bash
-apt-get update
-apt-get install netcat -y
 nc -vlp 8080
 ```
 Jalankan pada client untuk mencoba port `8080` pada `[server ip]`
 ``` bash
-apt-get update
-apt-get install netcat -y
 nc -v [server ip] 8080
 ```
 Contoh Output:
 ```
 10.57.4.2: inverse host lookup failed: Unknown host
 (UNKNOWN) [10.57.4.2] 8080 (http-alt) open
+```
+Jalankan pada server untuk membuka port 8000
+``` bash
+nc -v [server ip] 8000
 ```
 Jalankan pada client untuk mencoba port `8080` pada `[server ip]`
 ``` bash
@@ -527,7 +537,15 @@ Contoh Output:
 ```
 10.57.4.2: inverse host lookup failed: Unknown host
 ```
-
+---
+Tips: pastikan tidak ada proses yang mendengarkan port tersebut dengan melakukan list semua port yang mendengarkan dan mendapatkan `[pid]` dengan
+``` bash
+netstat -anp
+```
+kemudian mematikan proses tersebut dengan
+``` bash
+kill -9 [pid]
+```
 ## No. 3
 Jalankan pada **Revolte** dan **Richter** 
 ``` bash
