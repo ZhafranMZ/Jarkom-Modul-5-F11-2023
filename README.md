@@ -588,6 +588,35 @@ iptables -A INPUT -p tcp --dport 8080 -j DROP
 ```
 
 ## No. 7
+Jalankan pada **Sein**
 ``` bash
 
+```
+
+Jalankan pada **Stark**
+``` bash
+
+```
+---
+Untuk melakukan pengecekan, bikin file `listen80.sh` dan `listen443.sh` pada **Sein** dan **Stark** yang berisi
+
+- `listen80.sh`
+``` bash
+while true
+do
+	nc -l -p 80 -c 'hostname'
+done
+```
+- `listen443.sh`
+``` bash
+while true
+do
+	nc -l -p 443 -c 'hostname'
+done
+```
+kemudian jalankan pada **Sein** dan **Stark**
+``` bash
+chmod +x listen80.sh 
+chmod +x listen443.sh
+./listen80.sh & ./listen443.sh & disown
 ```
