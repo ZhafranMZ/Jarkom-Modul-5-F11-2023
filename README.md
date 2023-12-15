@@ -482,6 +482,13 @@ iptables -t nat -F
 # Set SNAT rule for NAT postrouting
 iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $(ifconfig eth0 | grep inet | awk '{print $2}')
 ```
+---
+Bisa kita lakukan ping ke sebuah ip external pada node selain **Aura** untuk memeriksa apakah NAT berfungsi
+```
+ping 1.1.1.1
+```
+![Screenshot from 2023-12-15 16-39-17](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/f010d67e-bf41-4eaf-a0b4-1ae0d3f2e6f8)
+
 
 ## No. 2
 Jalankan pada server yang hanya membolehkan port `8080` untuk masuk
@@ -661,7 +668,7 @@ Masukkan dalam **Sein** dan **Stark**
 ``` bash
 iptables -A INPUT -p tcp -s 10.57.0.28/30 -m multiport --dports 80,443 -m time --datestart "2024-02-14T00:00:00" --datestop "2024-02-15T00:00:00" -j DROP
 ```
-# No. 9
+## No. 9
 Jalankan pada webserver **Sein** dan **Stark** 
 ``` bash
 # Create New Chain called PORTSCANLIMIT
@@ -680,3 +687,19 @@ nmap [server ip] -p 1-50
 ```
 Dimana `[server ip]` adalah `10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
 ![Screenshot from 2023-12-15 15-03-39](https://github.com/ZhafranMZ/Jarkom-Modul-5-F11-2023/assets/63389207/4481617e-cacd-4973-b691-85a71c4843d0)
+
+## No. 10
+Jalankan pada selurun node
+``` bash
+iptables -N DROPLOG
+iptables -A DROPLOG -j LOG --log-level debug --log-prefix "Dropped Packet: "
+
+iptables -A INPUT -j DROPLOG
+iptables -A OUTPUT -j DROPLOG
+iptables -A FORWARD -j DROPLOG
+```
+---
+Untuk mendapatkan log untuk paket yang di drop, kita dapat melihat syslog pada `/var/log/syslog`
+``` bash
+cat /var/log/syslog | grep "Dropped Packet"
+```
