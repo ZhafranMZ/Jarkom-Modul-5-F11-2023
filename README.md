@@ -642,9 +642,21 @@ Masukkan dalam **Sein** dan **Stark**
 ``` bash
 iptables -A INPUT -p tcp -s 10.57.0.28/30 -m multiport --dports 80,443 -m time --datestart "2024-02-14T00:00:00" --datestop "2024-02-15T00:00:00" -j DROP
 ```
+# No. 9
+Jalankan pada webserver **Sein** dan **Stark** 
+``` bash
+# Create New Chain called PORTSCANLIMIT
+iptables -N PORTSCANLIMIT
+iptables -A PORTSCANLIMIT -m recent --set --name PORTSCANLIMIT
+iptables -A PORTSCANLIMIT -m recent --update --seconds 600 --hitcount 20 --name PORTSCANLIMIT --rsource -j
+iptables -A PORTSCANLIMIT -m recent --update --seconds 600 --hitcount 20 --name PORTSCANLIMIT --rsource -j DROP
+
+# Add PORTSCANLIMIT chain to INPUT
+iptables -A INPUT -p tcp -j PORTSCANLIMIT
+```
 ---
 Untuk melakukan pengecekan, pada node lain, jalankan
 ``` bash
-nmap [server ip] -p 1000-1050
+nmap [server ip] -p 1-50
 ```
-`10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
+Dimana `[server ip]` adalah `10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
