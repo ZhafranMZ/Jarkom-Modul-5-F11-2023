@@ -620,3 +620,18 @@ chmod +x listen80.sh
 chmod +x listen443.sh
 ./listen80.sh & ./listen443.sh & disown
 ```
+## No. 8
+Dikarenakan menurut [https://infopemilu.kpu.go.id/Pemilu/Peserta_pemilu](https://infopemilu.kpu.go.id/Pemilu/Peserta_pemilu) pemilu akan dilakukan pada `14 Februari 2024` sampai `15 Februari 2024` maka waktu mulai adalah `2024-02-14T00:00:00` dan waktu akhir adalah `2024-02-15T00:00:00` sesuai format dalam man untuk iptables
+
+> ### time
+> This matches if the packet arrival time/date is within a given range. All options are optional, but are ANDed when specified. All times are interpreted as UTC by default.
+> 
+> --datestart YYYY[-MM[-DD[Thh[:mm[:ss]]]]]  
+> --datestop YYYY[-MM[-DD[Thh[:mm[:ss]]]]]  
+> Only match during the given time, which must be in ISO 8601 "T" notation. The possible time range is 1970-01-01T00:00:00 to 2038-01-19T04:17:07.
+> If --datestart or --datestop are not specified, it will default to 1970-01-01 and 2038-01-19, respectively.
+
+Masukkan dalam **Sein** dan **Stark**
+``` bash
+iptables -A INPUT -p tcp -s 10.57.0.28/30 -m multiport --dports 80,443 -m time --datestart "2024-02-14T00:00:00" --datestop "2024-02-15T00:00:00" -j DROP
+```
