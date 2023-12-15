@@ -555,9 +555,9 @@ iptables -A INPUT -p icmp -m connlimit --connlimit-above 3 --connlimit-mask 0 -j
 Lakukan testing dengan melakukan ping dari 4 buah server yang berbeda. Ping `10.57.0.26` untuk **Richter** dan `10.57.0.30` untuk **Revolte**.
 
 ## No. 4
-Jalankan pada webserver **Sein** dan **Stark**
+Jalankan pada webserver **Sein** dan **Stark** yang membolehkan akses untuk port `22` pada subnet `10.57.4.2/22` yaitu **GrobeForest**
 ``` bash
-iptables -A INPUT -p tcp --dport 22 -s 10.15.4.0/22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 22 -s 10.57.4.0/22 -j ACCEPT
 iptables -A INPUT -p tcp --dport 22 -j DROP
 ```
 
