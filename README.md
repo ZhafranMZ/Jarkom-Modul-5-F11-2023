@@ -524,23 +524,27 @@ Untuk melakukan pengecekan, bikin file `listen8080.sh` dan `listen8080.sh` pada 
 
 - `listen8080.sh`
 ``` bash
+echo '
 while true
 do
-	nc -l -p 8080 -c 'hostname'
+	nc -l -p 8080 -c "hostname"
 done
+' > listen8080.sh
 ```
 - `listen8080.sh`
 ``` bash
+echo '
 while true
 do
-	nc -l -p 8000 -c 'hostname'
+	nc -l -p 8000 -c "hostname"
 done
+' > listen8000.sh
 ```
 kemudian jalankan pada server
 ``` bash
 # Add Running Permission
 chmod +x listen8080.sh 
-chmod +x listen8080.sh
+chmod +x listen8000.sh
 
 # Run listen8080.sh and listen8080.sh in the Background
 ./listen8080.sh & ./listen8080.sh & disown
