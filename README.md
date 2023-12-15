@@ -506,7 +506,7 @@ Jalankan pada server untuk membuka port `8080`
 ``` bash
 apt-get update
 apt-get install netcat -y
-nc -v -l 8080
+nc -vlp 8080
 ```
 Jalankan pada client untuk mencoba port `8080` pada `[server ip]`
 ``` bash
