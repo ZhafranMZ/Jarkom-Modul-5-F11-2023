@@ -468,7 +468,7 @@ Jalankan
 iptables -t nat -F
 
 # Set SNAT rule for NAT postrouting
-iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $(ifconfig eth0 | grep inet | awk '{print $2}')
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source $(ifconfig eth0 | awk -F ' *|:' '/inet addr/{print $4}')
 ```
 ---
 Bisa kita lakukan ping ke sebuah ip external pada node selain **Aura** untuk memeriksa apakah NAT berfungsi
