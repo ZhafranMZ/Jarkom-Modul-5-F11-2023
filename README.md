@@ -117,10 +117,7 @@ iface eth2 inet static
 - ### TurkRegion
 ```
 auto eth0
-iface eth0 inet static
-	address 10.57.8.2
-	netmask 255.255.248.0
-	gateway 10.57.8.1
+iface eth0 inet dhcp
 
 ```
 
@@ -137,10 +134,7 @@ iface eth0 inet static
 - ### GrobeForest
 ```
 auto eth0
-iface eth0 inet static
-	address 10.57.4.3
-	netmask 255.255.252.0
-	gateway 10.57.4.1
+iface eth0 inet dhcp
 
 ```
 
@@ -157,10 +151,7 @@ iface eth0 inet static
 - ### SchewerMountain
 ```
 auto eth0
-iface eth0 inet static
-	address 10.57.0.131
-	netmask 255.255.255.128
-	gateway 10.57.0.129
+iface eth0 inet dhcp
 
 ```
 
@@ -187,10 +178,7 @@ iface eth0 inet static
 - ### LaubHills
 ```
 auto eth0
-iface eth0 inet static
-	address 10.57.2.2
-	netmask 255.255.254.0
-	gateway 10.57.2.1
+iface eth0 inet dhcp
 
 ```
 
